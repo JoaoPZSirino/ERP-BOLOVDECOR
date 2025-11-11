@@ -28,5 +28,29 @@ namespace ERPBOLOV2
             var frm = new VizualizarProduto();
             frm.ShowDialog(this);
         }
+
+        private void visualizarAssessoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new VizualizarAssessor();
+            frm.ShowDialog(this);
+        }
+
+        private void visualizarDecoradoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new VizualizarDecorador();
+            frm.ShowDialog(this);
+        }
+
+        private void visualizarLocaisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new VizualizarLocal();
+            frm.ShowDialog(this);
+        }
+
+        private void btnGerarContrato_Click(object sender, EventArgs e)
+        {
+            var frm = new ContratoLocacao();
+            frm.ShowDialog(this);
+        }
     }
 }

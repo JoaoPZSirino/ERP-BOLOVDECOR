@@ -49,7 +49,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.lblNome = new System.Windows.Forms.Label();
             this.txtNome = new System.Windows.Forms.TextBox();
             this.lblNacionalidade = new System.Windows.Forms.Label();
@@ -94,7 +93,7 @@
             this.lblNacionalidade.AutoSize = true;
             this.lblNacionalidade.Location = new System.Drawing.Point(12, 45);
             this.lblNacionalidade.Name = "lblNacionalidade";
-            this.lblNacionalidade.Size = new System.Drawing.Size(74, 13);
+            this.lblNacionalidade.Size = new System.Drawing.Size(75, 13);
             this.lblNacionalidade.TabIndex = 2;
             this.lblNacionalidade.Text = "Nacionalidade";
             // 
@@ -110,7 +109,7 @@
             this.lblEstadoCivil.AutoSize = true;
             this.lblEstadoCivil.Location = new System.Drawing.Point(12, 75);
             this.lblEstadoCivil.Name = "lblEstadoCivil";
-            this.lblEstadoCivil.Size = new System.Drawing.Size(67, 13);
+            this.lblEstadoCivil.Size = new System.Drawing.Size(62, 13);
             this.lblEstadoCivil.TabIndex = 4;
             this.lblEstadoCivil.Text = "Estado Civil";
             // 
@@ -126,7 +125,7 @@
             this.lblProfissao.AutoSize = true;
             this.lblProfissao.Location = new System.Drawing.Point(12, 105);
             this.lblProfissao.Name = "lblProfissao";
-            this.lblProfissao.Size = new System.Drawing.Size(55, 13);
+            this.lblProfissao.Size = new System.Drawing.Size(50, 13);
             this.lblProfissao.TabIndex = 6;
             this.lblProfissao.Text = "Profissão";
             // 
@@ -174,7 +173,7 @@
             this.lblCidadeEstado.AutoSize = true;
             this.lblCidadeEstado.Location = new System.Drawing.Point(12, 195);
             this.lblCidadeEstado.Name = "lblCidadeEstado";
-            this.lblCidadeEstado.Size = new System.Drawing.Size(92, 13);
+            this.lblCidadeEstado.Size = new System.Drawing.Size(84, 13);
             this.lblCidadeEstado.TabIndex = 12;
             this.lblCidadeEstado.Text = "Cidade / Estado";
             // 
@@ -190,7 +189,7 @@
             this.lblRG.AutoSize = true;
             this.lblRG.Location = new System.Drawing.Point(12, 225);
             this.lblRG.Name = "lblRG";
-            this.lblRG.Size = new System.Drawing.Size(24, 13);
+            this.lblRG.Size = new System.Drawing.Size(23, 13);
             this.lblRG.TabIndex = 14;
             this.lblRG.Text = "RG";
             // 
@@ -245,6 +244,7 @@
             // 
             // CadastrarCliente
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(400, 370);
             this.Controls.Add(this.lblNome);
@@ -272,6 +272,7 @@
             this.Text = "Cadastrar Cliente";
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

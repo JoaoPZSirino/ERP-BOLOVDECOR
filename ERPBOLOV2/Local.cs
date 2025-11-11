@@ -1,0 +1,9 @@
+namespace ERPBOLOV2
+{
+    public class Local
+    {
+        public string Nome { get; set; }
+        public string Endereco { get; set; }
+        public string Celular { get; set; }
+    }
+}
