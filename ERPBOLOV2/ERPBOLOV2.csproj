@@ -183,6 +183,7 @@
       <DependentUpon>CadastroLocal.cs</DependentUpon>
     </Compile>
     <Compile Include="Cliente.cs" />
+    <Compile Include="Contrato.cs" />
     <Compile Include="ContratoLocacao.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -196,8 +197,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Locacao.cs" />
     <Compile Include="Local.cs" />
     <Compile Include="LocalFontResolver.cs" />
+    <Compile Include="Pagamento.cs" />
     <Compile Include="Produto.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

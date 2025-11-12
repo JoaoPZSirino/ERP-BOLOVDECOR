@@ -96,135 +96,78 @@ namespace ERPBOLOV2
             lblValorTotal.Text = $"R${total:0.00}";
         }
 
+        /// <summary>
+        /// Método principal do botão Salvar.
+        /// Agora ele coleta os dados, preenche o objeto 'Contrato'
+        /// e chama os métodos auxiliares para gerar o texto e salvar o arquivo.
+        /// </summary>
         private void btnSalvar_Click(object sender, EventArgs e)
         {
-            // gather data
+            // 1. Criar e preencher o objeto Contrato com os dados do formulário
+            Contrato novoContrato = new Contrato();
+
+            // --- Partes Envolvidas ---
             var clienteNome = cmbCliente.SelectedItem as string;
-            var cliente = CadastrarCliente.Clientes.FirstOrDefault(c => c.Nome == clienteNome);
+            novoContrato.ClienteContratante = CadastrarCliente.Clientes.FirstOrDefault(c => c.Nome == clienteNome);
 
-            var produtosSelecionados = clbProdutos.CheckedItems.Cast<string>().ToList();
+            var localNome = cmbLocal.SelectedItem as string;
+            novoContrato.LocalEvento = CadastroLocal.Locais.FirstOrDefault(l => l.Nome == localNome);
 
-            var sb = new StringBuilder();
-            sb.AppendLine("CONTRATO DE LOCAÇÃO");
-            sb.AppendLine("===================");
-            sb.AppendLine();
+            var assessorNome = cmbAssessor.SelectedItem as string;
+            novoContrato.AssessorEvento = CadastroAssessor.Assessores.FirstOrDefault(a => a.Nome == assessorNome);
 
-            sb.AppendLine("Cliente:");
-            if (cliente != null)
+            var decoradorNome = cmbDecorador.SelectedItem as string;
+            novoContrato.DecoradorEvento = CadastroDecorador.Decoradores.FirstOrDefault(d => d.Nome == decoradorNome);
+
+            // --- Dados do Evento ---
+            novoContrato.DataHoraEvento = dtpData.Value.Date + dtpHorario.Value.TimeOfDay;
+            novoContrato.TipoFesta = txtTipoFesta.Text;
+            novoContrato.Anfitriao = txtAnfitriao.Text;
+
+            // --- Itens e Valores ---
+            novoContrato.ValorTotal = 0m;
+            var produtosSelecionadosStrings = clbProdutos.CheckedItems.Cast<string>().ToList();
+
+            foreach (var item in produtosSelecionadosStrings)
             {
-                sb.AppendLine($"Nome: {cliente.Nome}");
-                sb.AppendLine($"Nacionalidade: {cliente.Nacionalidade}");
-                sb.AppendLine($"Estado Civil: {cliente.EstadoCivil}");
-                sb.AppendLine($"Profissão: {cliente.Profissao}");
-                sb.AppendLine($"Endereço: {cliente.Endereco}");
-                sb.AppendLine($"CEP: {cliente.CEP}");
-                sb.AppendLine($"Cidade/Estado: {cliente.CidadeEstado}");
-                sb.AppendLine($"RG: {cliente.RG}");
-                sb.AppendLine($"CPF: {cliente.CPF}");
-                sb.AppendLine($"Email: {cliente.Email}");
-            }
-            else
-            {
-                sb.AppendLine((clienteNome ?? "(não informado)"));
-            }
+                // item format: "Codigo - Modelo - R$Valor"
+                var parts = item.Split(new[] { '-' }, 3);
+                string codigo = parts.Length >= 1 ? parts[0].Trim() : item;
+                var produto = CadastrarProduto.Produtos.FirstOrDefault(p => p.Codigo == codigo);
 
-            sb.AppendLine();
-            sb.AppendLine("Produtos locados:");
-
-            decimal total = 0m;
-            if (produtosSelecionados.Any())
-            {
-                foreach (var item in produtosSelecionados)
+                if (produto != null)
                 {
-                    // item format: "Codigo - Modelo - R$Valor"
-                    var parts = item.Split(new[] { '-' }, 3);
-                    string codigo = parts.Length >= 1 ? parts[0].Trim() : item;
-                    var produto = CadastrarProduto.Produtos.FirstOrDefault(p => p.Codigo == codigo);
-                    if (produto != null)
-                    {
-                        sb.AppendLine($"- {produto.Codigo} | {produto.Modelo} | Cor: {produto.Cor} | Valor: R${produto.ValorLocacao:0.00}");
-                        total += produto.ValorLocacao;
-                    }
-                    else
-                    {
-                        sb.AppendLine($"- {item}");
-                    }
+                    novoContrato.ProdutosLocados.Add(produto);
+                    novoContrato.ValorTotal += produto.ValorLocacao;
+
+                    // TODO: Adicionar lógica para preencher 'DescricaoValoresReposicao'
+                    // Ex: novoContrato.DescricaoValoresReposicao.Add($"{produto.Modelo}: R${produto.ValorReposicao:0.00}");
                 }
             }
-            else
-            {
-                sb.AppendLine("(nenhum produto selecionado)");
-            }
 
-            sb.AppendLine();
-            sb.AppendLine($"Tipo de festa: {txtTipoFesta.Text}");
-            sb.AppendLine($"Anfitrião(ões): {txtAnfitriao.Text}");
-            sb.AppendLine($"Data do evento: {dtpData.Value.ToShortDateString()}");
-            sb.AppendLine($"Horário do evento: {dtpHorario.Value.ToShortTimeString()}");
-            sb.AppendLine();
+            // --- Pagamento (Simples, do seu formulário atual) ---
+            novoContrato.DetalhesFormaPagamento = cmbFormaPagamento.SelectedItem as string ?? "(não informado)";
 
-            sb.AppendLine("Local:");
-            var localNome = cmbLocal.SelectedItem as string;
-            var local = CadastroLocal.Locais.FirstOrDefault(l => l.Nome == localNome);
-            if (local != null)
-            {
-                sb.AppendLine($"Nome: {local.Nome}");
-                sb.AppendLine($"Endereço: {local.Endereco}");
-                sb.AppendLine($"Celular: {local.Celular}");
-            }
-            else
-            {
-                sb.AppendLine(localNome ?? "(não informado)");
-            }
+            // --- Pagamento (Campos do template .DOCX - Adicione-os ao seu formulário) ---
+            /* novoContrato.ValorEntrada = decimal.Parse(txtValorEntrada.Text);
+            novoContrato.DataEntrada = dtpDataEntrada.Value;
+            novoContrato.ValorRestante = decimal.Parse(txtValorRestante.Text);
+            novoContrato.DataRestante = dtpDataRestante.Value;
+            novoContrato.HorarioEntregaCombinado = txtHorarioEntrega.Text;
+            novoContrato.HorarioRetiradaCombinado = txtHorarioRetirada.Text;
+            */
 
-            sb.AppendLine();
-            sb.AppendLine("Assessor:");
-            var assessorNome = cmbAssessor.SelectedItem as string;
-            var assessor = CadastroAssessor.Assessores.FirstOrDefault(a => a.Nome == assessorNome);
-            if (assessor != null)
-            {
-                sb.AppendLine($"Nome: {assessor.Nome}");
-                sb.AppendLine($"Endereço: {assessor.Endereco}");
-                sb.AppendLine($"Celular: {assessor.Celular}");
-            }
-            else
-            {
-                sb.AppendLine(assessorNome ?? "(não informado)");
-            }
+            // 2. Gerar o texto do contrato usando o objeto preenchido
+            // (Este é o novo método auxiliar)
+            string textoDoContrato = GerarTextoParaContrato(novoContrato);
 
-            sb.AppendLine();
-            sb.AppendLine("Decorador:");
-            var decoradorNome = cmbDecorador.SelectedItem as string;
-            var decorador = CadastroDecorador.Decoradores.FirstOrDefault(d => d.Nome == decoradorNome);
-            if (decorador != null)
-            {
-                sb.AppendLine($"Nome: {decorador.Nome}");
-                sb.AppendLine($"Endereço: {decorador.Endereco}");
-                sb.AppendLine($"Celular: {decorador.Celular}");
-            }
-            else
-            {
-                sb.AppendLine(decoradorNome ?? "(não informado)");
-            }
-
-            sb.AppendLine();
-            sb.AppendLine($"Valor total calculado: R${total:0.00}");
-            sb.AppendLine($"Forma de pagamento: {cmbFormaPagamento.SelectedItem as string ?? "(não informado)"}");
-            sb.AppendLine();
-
-            sb.AppendLine("Assinaturas:");
-            sb.AppendLine();
-            sb.AppendLine("______________________________");
-            sb.AppendLine("Cliente");
-            sb.AppendLine();
-            sb.AppendLine("______________________________");
-            sb.AppendLine("Contratante");
-
-            // ask user where to save (allow txt or pdf)
+            // 3. Salvar o arquivo (Lógica do SaveFileDialog)
             using (var sfd = new SaveFileDialog())
             {
                 sfd.Filter = "PDF files (*.pdf)|*.pdf|Text files (*.txt)|*.txt";
-                var safeName = (clienteNome ?? "contrato")
+
+                // Usa o nome do cliente que está no objeto 'Contrato'
+                var safeName = (novoContrato.ClienteContratante?.Nome ?? "contrato")
                     .Replace(" ", "_")
                     .Replace("/", "_")
                     .Replace("\\", "_");
@@ -237,13 +180,15 @@ namespace ERPBOLOV2
                         var ext = Path.GetExtension(sfd.FileName).ToLowerInvariant();
                         if (ext == ".pdf")
                         {
-                            GeneratePdf(sb.ToString(), sfd.FileName);
+                            // Passa o texto gerado para o método de PDF
+                            GeneratePdf(textoDoContrato, sfd.FileName);
                             MessageBox.Show($"Contrato PDF salvo em:\n{sfd.FileName}", "Contrato gerado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             this.Close();
                         }
                         else
                         {
-                            File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.UTF8);
+                            // Escreve o texto gerado no arquivo TXT
+                            File.WriteAllText(sfd.FileName, textoDoContrato, Encoding.UTF8);
                             MessageBox.Show($"Contrato salvo em:\n{sfd.FileName}", "Contrato gerado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             this.Close();
                         }
@@ -254,6 +199,119 @@ namespace ERPBOLOV2
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// NOVO MÉTODO AUXILIAR
+        /// Pega o objeto 'Contrato' preenchido e gera o texto
+        /// formatado para o arquivo final.
+        /// </summary>
+        /// <param name="contrato">O objeto com todos os dados do contrato.</param>
+        /// <returns>Uma string com o contrato formatado.</returns>
+        private string GerarTextoParaContrato(Contrato contrato)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("CONTRATO DE LOCAÇÃO");
+            sb.AppendLine("===================");
+            sb.AppendLine();
+
+            sb.AppendLine("Cliente:");
+            if (contrato.ClienteContratante != null)
+            {
+                sb.AppendLine($"Nome: {contrato.ClienteContratante.Nome}");
+                sb.AppendLine($"Nacionalidade: {contrato.ClienteContratante.Nacionalidade}");
+                sb.AppendLine($"Estado Civil: {contrato.ClienteContratante.EstadoCivil}");
+                sb.AppendLine($"Profissão: {contrato.ClienteContratante.Profissao}");
+                sb.AppendLine($"Endereço: {contrato.ClienteContratante.Endereco}");
+                sb.AppendLine($"CEP: {contrato.ClienteContratante.CEP}");
+                sb.AppendLine($"Cidade/Estado: {contrato.ClienteContratante.CidadeEstado}");
+                sb.AppendLine($"RG: {contrato.ClienteContratante.RG}");
+                sb.AppendLine($"CPF: {contrato.ClienteContratante.CPF}");
+                sb.AppendLine($"Email: {contrato.ClienteContratante.Email}");
+            }
+            else
+            {
+                sb.AppendLine("(não informado)");
+            }
+
+            sb.AppendLine();
+            sb.AppendLine("Produtos locados:");
+
+            if (contrato.ProdutosLocados != null && contrato.ProdutosLocados.Any())
+            {
+                foreach (var produto in contrato.ProdutosLocados)
+                {
+                    sb.AppendLine($"- {produto.Codigo} | {produto.Modelo} | Cor: {produto.Cor} | Valor: R${produto.ValorLocacao:0.00}");
+                }
+            }
+            else
+            {
+                sb.AppendLine("(nenhum produto selecionado)");
+            }
+
+            sb.AppendLine();
+            sb.AppendLine($"Tipo de festa: {contrato.TipoFesta}");
+            sb.AppendLine($"Anfitrião(ões): {contrato.Anfitriao}");
+            sb.AppendLine($"Data do evento: {contrato.DataHoraEvento.ToShortDateString()}");
+            sb.AppendLine($"Horário do evento: {contrato.DataHoraEvento.ToShortTimeString()}");
+            sb.AppendLine();
+
+            sb.AppendLine("Local:");
+            if (contrato.LocalEvento != null)
+            {
+                sb.AppendLine($"Nome: {contrato.LocalEvento.Nome}");
+                sb.AppendLine($"Endereço: {contrato.LocalEvento.Endereco}");
+                sb.AppendLine($"Celular: {contrato.LocalEvento.Celular}");
+            }
+            else
+            {
+                sb.AppendLine("(não informado)");
+            }
+
+            sb.AppendLine();
+            sb.AppendLine("Assessor:");
+            if (contrato.AssessorEvento != null)
+            {
+                sb.AppendLine($"Nome: {contrato.AssessorEvento.Nome}");
+                sb.AppendLine($"Endereço: {contrato.AssessorEvento.Endereco}");
+                sb.AppendLine($"Celular: {contrato.AssessorEvento.Celular}");
+            }
+            else
+            {
+                sb.AppendLine("(não informado)");
+            }
+
+            sb.AppendLine();
+            sb.AppendLine("Decorador:");
+            if (contrato.DecoradorEvento != null)
+            {
+                sb.AppendLine($"Nome: {contrato.DecoradorEvento.Nome}");
+                sb.AppendLine($"Endereço: {contrato.DecoradorEvento.Endereco}");
+                sb.AppendLine($"Celular: {contrato.DecoradorEvento.Celular}");
+            }
+            else
+            {
+                sb.AppendLine("(não informado)");
+            }
+
+            sb.AppendLine();
+            sb.AppendLine($"Valor total calculado: R${contrato.ValorTotal:0.00}");
+            sb.AppendLine($"Forma de pagamento: {contrato.DetalhesFormaPagamento}");
+            sb.AppendLine();
+
+            // TODO: Adicionar aqui o restante do texto do contrato (Cláusulas, etc.)
+            // buscando os dados do objeto 'contrato'.
+            // Ex: sb.AppendLine($"O pagamento será feito com entrada de R${contrato.ValorEntrada}...");
+
+            sb.AppendLine("Assinaturas:");
+            sb.AppendLine();
+            sb.AppendLine("______________________________");
+            sb.AppendLine("Cliente");
+            sb.AppendLine();
+            sb.AppendLine("______________________________");
+            sb.AppendLine("Contratante"); // (No seu docx, a outra parte é ZULEICA ZEN SIRINO)
+
+            return sb.ToString();
         }
 
         private void GeneratePdf(string text, string outputPath)
