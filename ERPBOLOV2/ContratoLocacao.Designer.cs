@@ -251,6 +251,7 @@
             this.lblValorTotal.Size = new System.Drawing.Size(42, 13);
             this.lblValorTotal.TabIndex = 19;
             this.lblValorTotal.Text = "R$0,00";
+            this.lblValorTotal.Click += new System.EventHandler(this.lblValorTotal_Click);
             // 
             // labelFormaPagamento
             // 

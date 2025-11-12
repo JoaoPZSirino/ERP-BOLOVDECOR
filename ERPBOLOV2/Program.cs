@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PdfSharp.Fonts;
 
 namespace ERPBOLOV2
 {
@@ -14,6 +15,8 @@ namespace ERPBOLOV2
         [STAThread]
         static void Main()
         {
+            GlobalFontSettings.FontResolver = new LocalFontResolver();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
