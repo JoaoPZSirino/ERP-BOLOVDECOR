@@ -1,49 +1,97 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace ERPBOLOV2
 {
-    internal class Locacao
+    public class Locacao
     {
-        // --- Informações do Evento ---
-        public DateTime DataHoraEvento { get; set; }
-        public string TipoFesta { get; set; }
-        public string Anfitriao { get; set; }
-
-        // --- Partes Envolvidas ---
-        public Cliente ClienteContratante { get; set; }
-        public Local LocalEvento { get; set; }
-        public Assessor AssessorEvento { get; set; }
-        public Decorador DecoradorEvento { get; set; }
-
-        // --- Itens e Valores ---
-        public List<Produto> ProdutosLocados { get; set; }
-        public decimal ValorTotal { get; set; } // O total ainda fica aqui
-        public List<string> DescricaoValoresReposicao { get; set; }
-
-        // --- PAGAMENTO (AQUI ESTÁ A MUDANÇA) ---
-        // As propriedades de pagamento foram movidas para a classe Pagamento
-        public Pagamento DetalhesPagamento { get; set; } // <--- SUA NOVA PROPRIEDADE
-
-        // --- Logística ---
-        public string HorarioEntregaCombinado { get; set; }
-        public string HorarioRetiradaCombinado { get; set; }
-
-        // --- Dados de Geração ---
-        public string CidadeAssinatura { get; set; }
-        public DateTime DataAssinatura { get; set; }
-
-
         public Locacao()
         {
-            ProdutosLocados = new List<Produto>();
-            DescricaoValoresReposicao = new List<string>();
-
-            // Inicializa o objeto de Pagamento
-            DetalhesPagamento = new Pagamento(); // <--- IMPORTANTE
-
-            this.CidadeAssinatura = "Maringá";
-            this.DataAssinatura = DateTime.Now;
+            // Inicializa listas ou valores padrão se necessário
+            DataCriacao = DateTime.Now;
         }
+
+        public int Id { get; set; }
+
+        // Dados do Evento (Baseado no CSV: DATA, HOR)
+        public DateTime DataEvento { get; set; }
+        public TimeSpan HorarioEvento { get; set; } // Coluna HOR
+        public DateTime DataCriacao { get; private set; }
+
+        // Relacionamentos com as classes existentes
+        // No CSV: CLIENTE, FONE (Fone fica dentro do objeto Cliente)
+        public Cliente Cliente { get; set; }
+
+        // No CSV: ASSESSOR
+        public Assessor Assessor { get; set; }
+
+        // No CSV: DECORADOR
+        public Decorador Decorador { get; set; }
+
+        // No CSV: LOCAL
+        public Local LocalEvento { get; set; }
+
+        // Produtos: permitir um de cada tipo
+        public Produto ProdutoBolo { get; set; }
+        public Produto ProdutoBoleira { get; set; }
+        public Produto ProdutoTopo { get; set; }
+        public Produto ProdutoOutro { get; set; }
+
+        // Mantém propriedade antiga por retrocompatibilidade (pode representar o bolo principal)
+        public Produto Produto { get; set; }
+
+        // Detalhes Específicos da Locação (Baseado no CSV: BOLEIRA, TOPO, OBS)
+        public string DescricaoBoleira { get; set; } // Coluna BOLEIRA (ex: "Prato Vidro 50cm")
+        public string DescricaoTopo { get; set; }    // Coluna TOPO (ex: "15 Rose")
+        public string Observacao { get; set; }       // Coluna Observaçao / OBS
+
+        // Logística (Baseado no CSV: RET/ENTR)
+        public TipoLogistica TipoLogistica { get; set; }
+
+        // Controle de Status (Baseado no CSV: PRONTO, ENTREGUE, DEVOLV)
+        public bool EstaPronto { get; set; }    // Coluna PRONTO
+        public bool FoiEntregue { get; set; }   // Coluna ENTREGUE
+        public bool FoiDevolvido { get; set; }  // Coluna DEVOLV
+        public string ResponsavelDevolucao { get; set; } // Coluna vazia no final ou OBS de devolução
+
+        // Financeiro (Baseado na regra de negócio informada)
+        public decimal ValorTotal { get; set; }
+        public FormaPagamento FormaPagamento { get; set; }
+        public CondicaoPagamento CondicaoPagamento { get; set; }
+
+        // Propriedade calculada para ajudar no controle de datas de pagamento
+        public DateTime? DataVencimentoRestante
+        {
+            get
+            {
+                if (CondicaoPagamento == CondicaoPagamento.EntradaMais7Dias)
+                {
+                    return DataEvento.AddDays(-7);
+                }
+                return DataEvento; // Se for a vista ou outro, assume a data do evento como base
+            }
+        }
+    }
+
+    // Enums para padronizar os dados do CSV e Regras de Negócio
+
+    public enum TipoLogistica
+    {
+        Retirada = 1,
+        Entrega = 2,
+        Transportadora = 3 // Visto no CSV
+    }
+
+    public enum FormaPagamento
+    {
+        Dinheiro = 1,
+        Pix = 2,
+        TransferenciaBancaria = 3
+    }
+
+    public enum CondicaoPagamento
+    {
+        AVista = 1,
+        EntradaMais7Dias = 2, // 1 entrada e restante 7 dias antes
+        Outro = 99 // Controle manual conforme solicitado
     }
 }

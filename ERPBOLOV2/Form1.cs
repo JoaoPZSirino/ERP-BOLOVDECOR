@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ERPBOLOV2
@@ -15,6 +9,13 @@ namespace ERPBOLOV2
         public Form1()
         {
             InitializeComponent();
+            Load += Form1_Load;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            AtualizarListaDoDia(monthCalendar1.SelectionStart);
+            AtualizarDiasComLocacao();
         }
 
         //Menu Clientes
@@ -90,10 +91,97 @@ namespace ERPBOLOV2
 
         private void btnGerarContrato_Click(object sender, EventArgs e)
         {
-            var frm = new ContratoLocacao();
+            var frm = new GerarContrato();
             frm.ShowDialog(this);
         }
 
+        private void vizualizarLocaçãoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new VizualizarLocacao();
+            frm.ShowDialog(this);
+        }
 
+        private void cadastrarLocaçãoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new CadastrarLocacao();
+            frm.LocacaoAdicionada += (s, ev) => { AtualizarListaDoDia(monthCalendar1.SelectionStart); AtualizarDiasComLocacao(); };
+            frm.ShowDialog(this);
+        }
+
+        private void monthCalendar1_DateSelected(object sender, DateRangeEventArgs e)
+        {
+            AtualizarListaDoDia(e.Start);
+        }
+
+        private void AtualizarListaDoDia(DateTime data)
+        {
+            lstLocacoes.Items.Clear();
+            var encontrados = CadastrarLocacao.Locacoes.Where(l => l.DataEvento.Date == data.Date).OrderBy(l => l.HorarioEvento);
+            foreach (var l in encontrados)
+            {
+                var horario = l.HorarioEvento.ToString(@"hh\:mm");
+                var texto = $"{horario} - {l.Cliente?.Nome ?? "(Sem Cliente)"} - {l.LocalEvento?.Nome ?? "(Sem Local)"} - {l.ProdutoBolo?.Codigo ?? l.Produto?.Codigo ?? "(Sem Produto)"}";
+                lstLocacoes.Items.Add(new ListItemForLocacao { LocacaoId = l.Id, Text = texto });
+            }
+
+            // atualizar dias com locações (mantém calendário sinalizando dias válidos)
+            AtualizarDiasComLocacao();
+        }
+
+        private void AtualizarDiasComLocacao()
+        {
+            // Remove all existing bolded dates and add the dates that have locacoes
+            try
+            {
+                monthCalendar1.RemoveAllBoldedDates();
+            }
+            catch
+            {
+                // ignore if not supported
+            }
+
+            var datas = CadastrarLocacao.Locacoes.Select(l => l.DataEvento.Date).Distinct();
+            foreach (var d in datas)
+            {
+                try
+                {
+                    monthCalendar1.AddBoldedDate(d);
+                }
+                catch
+                {
+                    // ignore invalid dates
+                }
+            }
+            try
+            {
+                monthCalendar1.UpdateBoldedDates();
+            }
+            catch
+            {
+                // ignore
+            }
+        }
+
+        private void lstLocacoes_DoubleClick(object sender, EventArgs e)
+        {
+            if (lstLocacoes.SelectedItem is ListItemForLocacao item)
+            {
+                var loc = CadastrarLocacao.Locacoes.FirstOrDefault(x => x.Id == item.LocacaoId);
+                if (loc != null)
+                {
+                    var frm = new CadastrarLocacao(loc);
+                    frm.LocacaoAdicionada += (s, ev) => AtualizarListaDoDia(monthCalendar1.SelectionStart);
+                    frm.ShowDialog(this);
+                }
+            }
+        }
+
+        // helper class to store id + text in ListBox
+        private class ListItemForLocacao
+        {
+            public int LocacaoId { get; set; }
+            public string Text { get; set; }
+            public override string ToString() => Text;
+        }
     }
 }

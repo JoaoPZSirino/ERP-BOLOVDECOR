@@ -12,9 +12,9 @@ using PdfSharp.Drawing.Layout;
 
 namespace ERPBOLOV2
 {
-    public partial class ContratoLocacao : Form
+    public partial class GerarContrato : Form
     {
-        public ContratoLocacao()
+        public GerarContrato()
         {
             InitializeComponent();
             Load += ContratoLocacao_Load;

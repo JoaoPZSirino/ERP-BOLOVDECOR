@@ -1,6 +1,6 @@
 ﻿namespace ERPBOLOV2
 {
-    partial class ContratoLocacao
+    partial class GerarContrato
     {
         /// <summary>
         /// Required designer variable.
