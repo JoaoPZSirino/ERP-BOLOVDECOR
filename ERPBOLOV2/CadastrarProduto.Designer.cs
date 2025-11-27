@@ -9,7 +9,6 @@
         private System.Windows.Forms.Label lblCodigo;
         private System.Windows.Forms.TextBox txtCodigo;
         private System.Windows.Forms.Label lblModelo;
-        private System.Windows.Forms.TextBox txtModelo;
         private System.Windows.Forms.Label lblCor;
         private System.Windows.Forms.TextBox txtCor;
         private System.Windows.Forms.Label lblAltura;
@@ -43,11 +42,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.lblCodigo = new System.Windows.Forms.Label();
             this.txtCodigo = new System.Windows.Forms.TextBox();
             this.lblModelo = new System.Windows.Forms.Label();
-            this.txtModelo = new System.Windows.Forms.TextBox();
             this.lblCor = new System.Windows.Forms.Label();
             this.txtCor = new System.Windows.Forms.TextBox();
             this.lblAltura = new System.Windows.Forms.Label();
@@ -59,6 +56,7 @@
             this.lblValor = new System.Windows.Forms.Label();
             this.txtValor = new System.Windows.Forms.TextBox();
             this.btnSalvar = new System.Windows.Forms.Button();
+            this.CBModelo = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lblCodigo
@@ -82,16 +80,9 @@
             this.lblModelo.AutoSize = true;
             this.lblModelo.Location = new System.Drawing.Point(12, 45);
             this.lblModelo.Name = "lblModelo";
-            this.lblModelo.Size = new System.Drawing.Size(45, 13);
+            this.lblModelo.Size = new System.Drawing.Size(42, 13);
             this.lblModelo.TabIndex = 2;
             this.lblModelo.Text = "Modelo";
-            // 
-            // txtModelo
-            // 
-            this.txtModelo.Location = new System.Drawing.Point(120, 42);
-            this.txtModelo.Name = "txtModelo";
-            this.txtModelo.Size = new System.Drawing.Size(200, 20);
-            this.txtModelo.TabIndex = 3;
             // 
             // lblCor
             // 
@@ -114,7 +105,7 @@
             this.lblAltura.AutoSize = true;
             this.lblAltura.Location = new System.Drawing.Point(12, 105);
             this.lblAltura.Name = "lblAltura";
-            this.lblAltura.Size = new System.Drawing.Size(38, 13);
+            this.lblAltura.Size = new System.Drawing.Size(34, 13);
             this.lblAltura.TabIndex = 6;
             this.lblAltura.Text = "Altura";
             // 
@@ -162,7 +153,7 @@
             this.lblValor.AutoSize = true;
             this.lblValor.Location = new System.Drawing.Point(12, 195);
             this.lblValor.Name = "lblValor";
-            this.lblValor.Size = new System.Drawing.Size(92, 13);
+            this.lblValor.Size = new System.Drawing.Size(87, 13);
             this.lblValor.TabIndex = 12;
             this.lblValor.Text = "Valor de locação";
             // 
@@ -183,14 +174,23 @@
             this.btnSalvar.UseVisualStyleBackColor = true;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
             // 
+            // CBModelo
+            // 
+            this.CBModelo.FormattingEnabled = true;
+            this.CBModelo.Location = new System.Drawing.Point(120, 42);
+            this.CBModelo.Name = "CBModelo";
+            this.CBModelo.Size = new System.Drawing.Size(200, 21);
+            this.CBModelo.TabIndex = 15;
+            // 
             // CadastrarProduto
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(360, 280);
+            this.Controls.Add(this.CBModelo);
             this.Controls.Add(this.lblCodigo);
             this.Controls.Add(this.txtCodigo);
             this.Controls.Add(this.lblModelo);
-            this.Controls.Add(this.txtModelo);
             this.Controls.Add(this.lblCor);
             this.Controls.Add(this.txtCor);
             this.Controls.Add(this.lblAltura);
@@ -204,10 +204,14 @@
             this.Controls.Add(this.btnSalvar);
             this.Name = "CadastrarProduto";
             this.Text = "Cadastrar Produto";
+            this.Load += new System.EventHandler(this.CadastrarProduto_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
+
+        private System.Windows.Forms.ComboBox CBModelo;
     }
 }

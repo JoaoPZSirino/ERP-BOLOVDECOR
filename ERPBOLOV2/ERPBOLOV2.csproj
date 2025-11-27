@@ -237,6 +237,9 @@
     <EmbeddedResource Include="CadastrarCliente.resx">
       <DependentUpon>CadastrarCliente.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CadastrarProduto.resx">
+      <DependentUpon>CadastrarProduto.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CadastroDecorador.resx">
       <DependentUpon>CadastroDecorador.cs</DependentUpon>
     </EmbeddedResource>
