@@ -2,6 +2,8 @@ namespace ERPBOLOV2
 {
     public class Cliente
     {
+        public int Id { get; set; }
+
         public string Nome { get; set; }
         public string Nacionalidade { get; set; }
         public string EstadoCivil { get; set; }
@@ -12,5 +14,8 @@ namespace ERPBOLOV2
         public string RG { get; set; }
         public string CPF { get; set; }
         public string Email { get; set; }
+        public string Celular { get; set; }
+
+
     }
 }

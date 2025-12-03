@@ -23,6 +23,9 @@ namespace ERPBOLOV2
 
         public event EventHandler ClienteAdicionado;
 
+        private readonly ClienteDAO _dao = new ClienteDAO();
+
+
         public CadastrarCliente()
         {
             InitializeComponent();
@@ -41,8 +44,11 @@ namespace ERPBOLOV2
                 CidadeEstado = txtCidadeEstado.Text,
                 RG = txtRG.Text,
                 CPF = txtCPF.Text,
-                Email = txtEmail.Text
+                Email = txtEmail.Text,
+                Celular = txtCelular.Text,
             };
+
+            _dao.AdicionarCliente(c);
 
             Clientes.Add(c);
             ClienteAdicionado?.Invoke(this, EventArgs.Empty);

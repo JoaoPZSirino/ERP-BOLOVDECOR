@@ -70,6 +70,8 @@
             this.lblEmail = new System.Windows.Forms.Label();
             this.txtEmail = new System.Windows.Forms.TextBox();
             this.btnSalvar = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtCelular = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lblNome
@@ -219,7 +221,7 @@
             // lblEmail
             // 
             this.lblEmail.AutoSize = true;
-            this.lblEmail.Location = new System.Drawing.Point(12, 285);
+            this.lblEmail.Location = new System.Drawing.Point(12, 281);
             this.lblEmail.Name = "lblEmail";
             this.lblEmail.Size = new System.Drawing.Size(35, 13);
             this.lblEmail.TabIndex = 18;
@@ -227,14 +229,14 @@
             // 
             // txtEmail
             // 
-            this.txtEmail.Location = new System.Drawing.Point(110, 282);
+            this.txtEmail.Location = new System.Drawing.Point(110, 278);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(250, 20);
             this.txtEmail.TabIndex = 19;
             // 
             // btnSalvar
             // 
-            this.btnSalvar.Location = new System.Drawing.Point(110, 320);
+            this.btnSalvar.Location = new System.Drawing.Point(110, 367);
             this.btnSalvar.Name = "btnSalvar";
             this.btnSalvar.Size = new System.Drawing.Size(100, 30);
             this.btnSalvar.TabIndex = 20;
@@ -242,11 +244,29 @@
             this.btnSalvar.UseVisualStyleBackColor = true;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 307);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(39, 13);
+            this.label1.TabIndex = 21;
+            this.label1.Text = "Celular";
+            // 
+            // txtCelular
+            // 
+            this.txtCelular.Location = new System.Drawing.Point(110, 304);
+            this.txtCelular.Name = "txtCelular";
+            this.txtCelular.Size = new System.Drawing.Size(250, 20);
+            this.txtCelular.TabIndex = 22;
+            // 
             // CadastrarCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 370);
+            this.ClientSize = new System.Drawing.Size(400, 409);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtCelular);
             this.Controls.Add(this.lblNome);
             this.Controls.Add(this.txtNome);
             this.Controls.Add(this.lblNacionalidade);
@@ -276,5 +296,8 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtCelular;
     }
 }

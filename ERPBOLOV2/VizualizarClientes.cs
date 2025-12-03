@@ -6,6 +6,7 @@ namespace ERPBOLOV2
 {
     public partial class VizualizarClientes : Form
     {
+        private readonly ClienteDAO _dao = new ClienteDAO();
         public VizualizarClientes()
         {
             InitializeComponent();
@@ -17,12 +18,18 @@ namespace ERPBOLOV2
             AtualizarGrid();
         }
 
-        private void AtualizarGrid()
+        private void AtualizarGrid(string filtroNome = null)
         {
             dgvClientes.DataSource = null;
-            dgvClientes.DataSource = CadastrarCliente.Clientes.Select(c => new
+
+            var clientes = string.IsNullOrWhiteSpace(filtroNome)
+                ? _dao.ObterTodosClientes()
+                : _dao.ObterClientesPorNome(filtroNome);
+
+            dgvClientes.DataSource = clientes.Select(c => new
             {
                 c.Nome,
+                c.Celular,
                 c.Nacionalidade,
                 c.EstadoCivil,
                 c.Profissao,
@@ -40,6 +47,13 @@ namespace ERPBOLOV2
             var frm = new CadastrarCliente();
             frm.ClienteAdicionado += (s, ev) => AtualizarGrid();
             frm.ShowDialog(this);
+        }
+
+        private void buttonFiltroNome_Click(object sender, EventArgs e)
+        {
+            //Ligar txtFiltroNome.keyDown para filtrar ao pressinonar buttonFiltroNome
+            var txt = txtFiltroNome.Text;
+            AtualizarGrid(txt);
         }
     }
 }

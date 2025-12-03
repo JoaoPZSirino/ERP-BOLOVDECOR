@@ -92,6 +92,6 @@ namespace ERPBOLOV2
     {
         AVista = 1,
         EntradaMais7Dias = 2, // 1 entrada e restante 7 dias antes
-        Outro = 99 // Controle manual conforme solicitado
+        Outro = 99 // Controle manual 
     }
 }

@@ -19,9 +19,10 @@
 
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.dgvClientes = new System.Windows.Forms.DataGridView();
             this.btnAdicionar = new System.Windows.Forms.Button();
+            this.txtFiltroNome = new System.Windows.Forms.TextBox();
+            this.buttonFiltroNome = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClientes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,18 +48,43 @@
             this.btnAdicionar.UseVisualStyleBackColor = true;
             this.btnAdicionar.Click += new System.EventHandler(this.btnAdicionar_Click);
             // 
+            // txtFiltroNome
+            // 
+            this.txtFiltroNome.Location = new System.Drawing.Point(494, 409);
+            this.txtFiltroNome.Name = "txtFiltroNome";
+            this.txtFiltroNome.Size = new System.Drawing.Size(278, 20);
+            this.txtFiltroNome.TabIndex = 2;
+            // 
+            // buttonFiltroNome
+            // 
+            this.buttonFiltroNome.Location = new System.Drawing.Point(368, 403);
+            this.buttonFiltroNome.Name = "buttonFiltroNome";
+            this.buttonFiltroNome.Size = new System.Drawing.Size(120, 30);
+            this.buttonFiltroNome.TabIndex = 3;
+            this.buttonFiltroNome.Text = "Filtrar por nome:";
+            this.buttonFiltroNome.UseVisualStyleBackColor = true;
+            this.buttonFiltroNome.Click += new System.EventHandler(this.buttonFiltroNome_Click);
+            // 
             // VizualizarClientes
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 441);
+            this.Controls.Add(this.buttonFiltroNome);
+            this.Controls.Add(this.txtFiltroNome);
             this.Controls.Add(this.dgvClientes);
             this.Controls.Add(this.btnAdicionar);
             this.Name = "VizualizarClientes";
             this.Text = "Vizualizar Clientes";
             ((System.ComponentModel.ISupportInitialize)(this.dgvClientes)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
+
+        private System.Windows.Forms.TextBox txtFiltroNome;
+        private System.Windows.Forms.Button buttonFiltroNome;
     }
 }
