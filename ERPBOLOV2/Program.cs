@@ -1,25 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using PdfSharp.Fonts;
+using PdfSharp.Fonts; // Importante
 
 namespace ERPBOLOV2
 {
     internal static class Program
     {
-        /// <summary>
-        /// Ponto de entrada principal para o aplicativo.
-        /// </summary>
         [STAThread]
         static void Main()
         {
-            GlobalFontSettings.FontResolver = new LocalFontResolver();
+            // ATIVA O CORRETOR DE FONTES
+            GlobalFontSettings.FontResolver = new DefinidorDeFontes();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Form1()); // Ou Form1, dependendo da sua tela inicial
         }
     }
 }

@@ -281,7 +281,7 @@
             this.btnSalvar.UseVisualStyleBackColor = true;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
             // 
-            // ContratoLocacao
+            // GerarContrato
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -309,8 +309,9 @@
             this.Controls.Add(this.labelFormaPagamento);
             this.Controls.Add(this.cmbFormaPagamento);
             this.Controls.Add(this.btnSalvar);
-            this.Name = "ContratoLocacao";
+            this.Name = "GerarContrato";
             this.Text = "Contrato de Locação";
+            this.Load += new System.EventHandler(this.GerarContrato_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
