@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ERPBOLOV2.DAO;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -6,6 +7,8 @@ namespace ERPBOLOV2
 {
     public partial class VizualizarLocal : Form
     {
+        private readonly LocalDAO _dao = new LocalDAO();
+
         public VizualizarLocal()
         {
             InitializeComponent();
@@ -17,11 +20,18 @@ namespace ERPBOLOV2
             AtualizarGrid();
         }
 
-        private void AtualizarGrid()
+        private void AtualizarGrid(string filtroPorNome = null)
         {
             dgvLocais.DataSource = null;
-            dgvLocais.DataSource = CadastroLocal.Locais.Select(l => new
+
+            var Locais = string.IsNullOrEmpty(filtroPorNome)
+                ? _dao.ObterTodosLocais()
+                : _dao.FiltrarLocaisPorNome(filtroPorNome);
+
+
+            dgvLocais.DataSource = Locais.Select(l => new
             {
+                l.Id,
                 l.Nome,
                 l.Endereco,
                 l.Celular

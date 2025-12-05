@@ -222,6 +222,7 @@
     <Compile Include="Contrato.cs" />
     <Compile Include="DAO\ClienteDAO.cs" />
     <Compile Include="DAO\DecoradorDAO.cs" />
+    <Compile Include="DAO\LocalDAO.cs" />
     <Compile Include="GerarContrato.cs">
       <SubType>Form</SubType>
     </Compile>
