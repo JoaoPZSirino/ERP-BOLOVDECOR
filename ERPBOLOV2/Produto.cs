@@ -2,6 +2,7 @@ namespace ERPBOLOV2
 {
     public class Produto
     {
+        public int Id { get; set; }
         public string Codigo { get; set; }
         public TipoModelo Modelo  { get; set; }
         public string Cor { get; set; }
