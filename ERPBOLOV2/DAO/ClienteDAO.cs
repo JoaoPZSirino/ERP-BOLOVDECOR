@@ -14,6 +14,7 @@ namespace ERPBOLOV2
 
         public int AdicionarCliente(Cliente cliente)
         {
+            // Adiciona um novo cliente ao banco
             using (MySqlConnection conexao = new MySqlConnection(stringConexao))
             {
                 conexao.Open();

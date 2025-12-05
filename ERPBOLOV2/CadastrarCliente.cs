@@ -50,9 +50,6 @@ namespace ERPBOLOV2
 
             _dao.AdicionarCliente(c);
 
-            Clientes.Add(c);
-            ClienteAdicionado?.Invoke(this, EventArgs.Empty);
-
             MessageBox.Show("Cliente salvo com sucesso.", "Salvo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }

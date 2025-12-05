@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ERPBOLOV2.DAO;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -17,6 +18,9 @@ namespace ERPBOLOV2
 
         public event EventHandler DecoradorAdicionado;
 
+        private readonly DecoradorDAO _dao = new DecoradorDAO();
+
+
         public CadastroDecorador()
         {
             InitializeComponent();
@@ -31,8 +35,7 @@ namespace ERPBOLOV2
                 Celular = txtCelular.Text
             };
 
-            Decoradores.Add(d);
-            DecoradorAdicionado?.Invoke(this, EventArgs.Empty);
+            _dao.AdicionarDecorador(d);
 
             MessageBox.Show("Decorador salvo com sucesso.", "Salvo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
