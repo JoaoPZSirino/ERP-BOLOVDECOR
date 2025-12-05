@@ -32,11 +32,26 @@ namespace ERPBOLOV2
                 Celular = txtCelular.Text
             };
 
-            Assessores.Add(a);
-            AssessorAdicionado?.Invoke(this, EventArgs.Empty);
-
-            MessageBox.Show("Assessor salvo com sucesso.", "Salvo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            this.Close();
+            try
+            {
+                var dao = new DAO.AssessorDAO();
+                int newId = dao.AdicionarAssessor(a);
+                if (newId > 0)
+                {
+                    a.Id = newId;
+                    AssessorAdicionado?.Invoke(this, EventArgs.Empty);
+                    MessageBox.Show("Assessor salvo com sucesso.", "Salvo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Falha ao salvar assessor no banco de dados.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao salvar assessor: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

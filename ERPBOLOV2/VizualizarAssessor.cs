@@ -17,10 +17,15 @@ namespace ERPBOLOV2
             AtualizarGrid();
         }
 
-        private void AtualizarGrid()
+        private void AtualizarGrid(string FiltroNome = null)
         {
             dgvAssessores.DataSource = null;
-            dgvAssessores.DataSource = CadastroAssessor.Assessores.Select(a => new
+            var dao = new DAO.AssessorDAO();
+            var assessores = string.IsNullOrEmpty(FiltroNome)
+                ? dao.ObterTodosAssessores()
+                : dao.ObterAssessoresPorNome(FiltroNome);
+
+            dgvAssessores.DataSource = assessores.Select(a => new
             {
                 a.Nome,
                 a.Endereco,
@@ -33,6 +38,12 @@ namespace ERPBOLOV2
             var frm = new CadastroAssessor();
             frm.AssessorAdicionado += (s, ev) => AtualizarGrid();
             frm.ShowDialog(this);
+        }
+
+        private void buttonFiltroPorNome_Click(object sender, EventArgs e)
+        {
+            string txt = txtFiltroPorNome.Text;
+            AtualizarGrid(txt);
         }
     }
 }

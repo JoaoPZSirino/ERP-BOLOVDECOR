@@ -220,6 +220,7 @@
     </Compile>
     <Compile Include="Cliente.cs" />
     <Compile Include="Contrato.cs" />
+    <Compile Include="DAO\AssessorDAO.cs" />
     <Compile Include="DAO\ClienteDAO.cs" />
     <Compile Include="DAO\DecoradorDAO.cs" />
     <Compile Include="DAO\LocalDAO.cs" />
