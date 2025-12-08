@@ -32,6 +32,8 @@
         {
             this.dgvAssessores = new System.Windows.Forms.DataGridView();
             this.btnAdicionar = new System.Windows.Forms.Button();
+            this.txtFiltroPorNome = new System.Windows.Forms.TextBox();
+            this.buttonFiltroPorNome = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAssessores)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,20 +59,43 @@
             this.btnAdicionar.UseVisualStyleBackColor = true;
             this.btnAdicionar.Click += new System.EventHandler(this.btnAdicionar_Click);
             // 
+            // txtFiltroPorNome
+            // 
+            this.txtFiltroPorNome.Location = new System.Drawing.Point(383, 320);
+            this.txtFiltroPorNome.Name = "txtFiltroPorNome";
+            this.txtFiltroPorNome.Size = new System.Drawing.Size(189, 20);
+            this.txtFiltroPorNome.TabIndex = 2;
+            // 
+            // buttonFiltroPorNome
+            // 
+            this.buttonFiltroPorNome.Location = new System.Drawing.Point(273, 318);
+            this.buttonFiltroPorNome.Name = "buttonFiltroPorNome";
+            this.buttonFiltroPorNome.Size = new System.Drawing.Size(104, 23);
+            this.buttonFiltroPorNome.TabIndex = 3;
+            this.buttonFiltroPorNome.Text = "Filtrar por Nome:";
+            this.buttonFiltroPorNome.UseVisualStyleBackColor = true;
+            this.buttonFiltroPorNome.Click += new System.EventHandler(this.buttonFiltroPorNome_Click);
+            // 
             // VizualizarAssessor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 361);
+            this.Controls.Add(this.buttonFiltroPorNome);
+            this.Controls.Add(this.txtFiltroPorNome);
             this.Controls.Add(this.dgvAssessores);
             this.Controls.Add(this.btnAdicionar);
             this.Name = "VizualizarAssessor";
             this.Text = "Vizualizar Assessores";
             ((System.ComponentModel.ISupportInitialize)(this.dgvAssessores)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.TextBox txtFiltroPorNome;
+        private System.Windows.Forms.Button buttonFiltroPorNome;
     }
 }

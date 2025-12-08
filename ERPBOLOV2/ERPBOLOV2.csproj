@@ -220,9 +220,15 @@
     </Compile>
     <Compile Include="Cliente.cs" />
     <Compile Include="Contrato.cs" />
+    <Compile Include="DAO\AssessorDAO.cs" />
     <Compile Include="DAO\ClienteDAO.cs" />
     <Compile Include="DefinidorDeFontes.cs" />
     <Compile Include="GeradorPDF.cs" />
+
+    <Compile Include="DAO\DecoradorDAO.cs" />
+    <Compile Include="DAO\LocalDAO.cs" />
+    <Compile Include="DAO\ProdutoDAO.cs" />
+
     <Compile Include="GerarContrato.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -319,6 +325,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="VizualizarLocal.resx">
       <DependentUpon>VizualizarLocal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VizualizarProduto.resx">
+      <DependentUpon>VizualizarProduto.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

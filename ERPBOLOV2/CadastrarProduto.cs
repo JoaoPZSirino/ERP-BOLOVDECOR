@@ -54,11 +54,26 @@ namespace ERPBOLOV2
                 ValorLocacao = valor
             };
 
-            Produtos.Add(p);
-            ProdutoAdicionado?.Invoke(this, EventArgs.Empty);
-
-            MessageBox.Show("Produto salvo com sucesso.", "Salvo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            this.Close();
+            try
+            {
+                var dao = new DAO.ProdutoDAO();
+                int newId = dao.AdicionarProduto(p);
+                if (newId > 0)
+                {
+                    p.Id = newId;
+                    ProdutoAdicionado?.Invoke(this, EventArgs.Empty);
+                    MessageBox.Show("Produto salvo com sucesso.", "Salvo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Falha ao salvar produto no banco de dados.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao salvar produto: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 

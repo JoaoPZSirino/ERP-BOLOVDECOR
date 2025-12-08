@@ -20,7 +20,9 @@ namespace ERPBOLOV2
         private void AtualizarGrid()
         {
             dgvProdutos.DataSource = null;
-            dgvProdutos.DataSource = CadastrarProduto.Produtos.Select(p => new
+            var dao = new DAO.ProdutoDAO();
+            var produtos = dao.ObterTodosProdutos();
+            dgvProdutos.DataSource = produtos.Select(p => new
             {
                 p.Codigo,
                 p.Modelo,

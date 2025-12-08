@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ERPBOLOV2.DAO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,8 @@ namespace ERPBOLOV2
 {
     public partial class CadastroLocal : Form
     {
+        private readonly LocalDAO _dao = new LocalDAO();
+
         public static List<Local> Locais = new List<Local>
         {
             new Local { Nome = "Salão Primavera", Endereco = "Rua das Flores, 200", Celular = "(11) 90000-0001" },
@@ -37,8 +40,7 @@ namespace ERPBOLOV2
                 Celular = txtCelular.Text
             };
 
-            Locais.Add(l);
-            LocalAdicionado?.Invoke(this, EventArgs.Empty);
+            _dao.AdicionarLocal(l);
 
             MessageBox.Show("Local salvo com sucesso.", "Salvo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
