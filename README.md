@@ -38,9 +38,30 @@ Exemplo de `connectionStrings` em `App.config`:
 </connectionStrings>
 ```
 
-Execute um script de criação SQL no diretório do projeto.
+O repositório inclui um script de criação do banco de dados chamado `banco.sql` na raiz do projeto. Importe esse arquivo antes de executar a aplicação.
 
-> Observação: o repositório pode não incluir scripts de migração. Verifique as classes `DAO` para entender as entidades e a estrutura esperada.
+Como executar `banco.sql`:
+
+- Usando SQL Server Management Studio (SSMS):
+  1. Abra o SSMS e conecte-se ao servidor desejado.
+  2. Abra o arquivo `banco.sql` (`File > Open > File...`).
+  3. Se necessário, selecione o banco de destino na lista de databases (ou deixe o script criar o banco se ele contiver o comando `CREATE DATABASE`).
+  4. Clique em `Execute` (ou pressione `F5`).
+
+- Usando `sqlcmd` (linha de comando):
+  - Exemplo de comando para executar o script em um servidor SQL Server:
+
+```powershell
+sqlcmd -S SEU_SERVIDOR -U SEU_USUARIO -P SUA_SENHA -i banco.sql
+```
+
+  - Se o script cria o banco de dados e você precisa executar comandos em um banco específico utilize `-d NomeDoBanco` após conectar.
+
+Observações:
+- Ajuste a `connectionString` no `App.config` para apontar ao servidor e ao nome do banco gerado pelo `banco.sql`.
+- Se o seu ambiente usa outro SGBD (MySQL, PostgreSQL, etc.), confirme se `banco.sql` é compatível ou converta o script para o dialeto apropriado.
+
+> Observação: verifique as classes `DAO` para entender as tabelas e restrições esperadas pelo aplicativo.
 
 ## Compilar e executar
 
@@ -57,15 +78,4 @@ Execute um script de criação SQL no diretório do projeto.
 - `ERPBOLOV2/` - projeto principal WinForms
 - `ERPBOLOV2/DAO` - classes de acesso a dados
 - Formulários: `CadastrarProduto`, `CadastroLocal`, `CadastroAssessor`, `CadastroDecorador`, etc.
-
-## Contribuição
-
-Pull requests são bem-vindos. Para contribuições:
-
-1. Crie um branch com sua feature: `git checkout -b feature/nova-feature`.
-2. Commit suas mudanças e abra um Pull Request.
-
-## Suporte
-
-Para dúvidas sobre execução ou instalação, abra uma issue no repositório.
 
