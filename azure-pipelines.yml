@@ -1,0 +1,48 @@
+trigger:
+- contrato
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  projectFile: 'ERPBOLOV2/ERPBOLOV2.csproj'
+  packagesConfig: 'ERPBOLOV2/packages.config'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+# 1. Instala uma versão recente e estável do NuGet CLI
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: '6.x'
+
+# 2. Restaura os pacotes NuGet na pasta raiz 'packages', exatamente onde o .csproj espera encontrá-los
+- task: NuGetCommand@2
+  displayName: 'Restore NuGet Packages'
+  inputs:
+    restoreSolution: '$(packagesConfig)'
+    restoreDirectory: '$(Build.SourcesDirectory)/packages'
+
+# 3. Compila o projeto C# Windows Forms em modo Release
+- task: VSBuild@1
+  displayName: 'Build ERPBOLOV2'
+  inputs:
+    solution: '$(projectFile)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+# 4. Copia os arquivos gerados (o .exe, as DLLs e configs) para a pasta de artefatos
+- task: CopyFiles@2
+  displayName: 'Copy Build Output'
+  inputs:
+    SourceFolder: 'ERPBOLOV2/bin/$(buildConfiguration)'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+# 5. Publica o executável para você poder baixá-lo no painel do Azure DevOps
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish ERPBOLOV2 Executable'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'ERPBOLOV2-Release'
+    publishLocation: 'Container'
