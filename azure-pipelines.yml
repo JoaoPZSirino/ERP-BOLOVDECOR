@@ -1,14 +1,14 @@
 trigger:
 - contrato
 
-# Usa o agente que está ouvindo no seu computador
+# Roda na nuvem oficial da Microsoft (onde o Visual Studio já está pronto)
 pool:
-  name: 'Default'
+  vmImage: 'windows-latest'
 
 variables:
   projectFile: 'ERPBOLOV2/ERPBOLOV2.csproj'
   packagesConfig: 'ERPBOLOV2/packages.config'
-  buildPlatform: 'AnyCPU'
+  buildPlatform: 'AnyCPU'                     # <-- Sem espaço, corrigido!
   buildConfiguration: 'Release'
 
 steps:
