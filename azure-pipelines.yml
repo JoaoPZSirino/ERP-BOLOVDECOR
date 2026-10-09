@@ -7,7 +7,7 @@ pool:
 variables:
   projectFile: 'ERPBOLOV2/ERPBOLOV2.csproj'
   packagesConfig: 'ERPBOLOV2/packages.config'
-  buildPlatform: 'Any CPU'
+  buildPlatform: 'AnyCPU'
   buildConfiguration: 'Release'
 
 steps:
