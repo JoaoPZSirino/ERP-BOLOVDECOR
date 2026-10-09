@@ -2,7 +2,7 @@ trigger:
 - contrato
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'Default'
 
 variables:
   projectFile: 'ERPBOLOV2/ERPBOLOV2.csproj'
